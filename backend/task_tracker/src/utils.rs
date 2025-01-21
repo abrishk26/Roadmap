@@ -122,6 +122,7 @@ pub fn update_task(update_args: &UpdateArgs) {
                 .expect("Task with the specified id does not extist");
 
             tasks[index].description = update_args.description.clone();
+            tasks[index].updated_at = chrono::Utc::now();
             write_tasks(tasks);
             println!("updated sucessfully");
 }
