@@ -23,7 +23,7 @@ Task Tracker is a command-line application to manage tasks. It allows you to add
     ```sh
     cargo build --release
     ```
-3. Go to the directory where the binary **task_tracer** is located
+3. Go to the directory where the binary **task_tracker** is located
    ```sh
    cd ./target/release
    ```
