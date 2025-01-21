@@ -21,32 +21,50 @@ Task Tracker is a command-line application to manage tasks. It allows you to add
 
 2. Build the project using Cargo:
     ```sh
-    cargo build
+    cargo build --release
     ```
+3. Go to the directory where the binary **task_tracer** is located
+   ```sh
+   cd ./target/release
+   ```
 
 ## Usage
 
 Run the application using Cargo:
 ```sh
-cargo run -- <command> [arguments]
+task_tracker <command> [arguments]
+```
 
-Commands
+## Commands
 add <description>: Add a new task with the given description.
 list <mode>: List tasks based on the mode (all, done, todo, in-progress).
 update <task_id> <description>: Update the task with the specified ID.
 delete <task_id>: Delete the task with the specified ID.
 mark-done <task_id>: Mark the task with the specified ID as done.
 mark-in-progress <task_id>: Mark the task with the specified ID as in-progress.
-Examples
+
+## Examples
 Add a new task:
-cargo run -- add "Finish the report"
+```sh
+task_tracker add "Finish the report"
+```
 List all tasks:
-cargo run -- list all
+```sh
+task_tracker list all
+```
 Update a task:
-cargo run -- update 1 "Finish the report and send it"
+```sh
+task_tracker update 1 "Finish the report and send it"
+```
 Delete a task:
-cargo run -- delete 1
+```sh
+task_tracker delete 1
+```
 Mark a task as done:
-cargo run -- mark-done 1
+```sh
+task_tracker mark-done 1
+```
 Mark a task as in-progress:
-cargo run -- mark-in-progress 1
+```sh
+task_tracker mark-in-progress 1
+```
