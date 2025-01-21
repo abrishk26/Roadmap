@@ -1,3 +1,4 @@
+use std::{fs::OpenOptions, io::{Read, Write}};
 use clap::{Parser, Args, Subcommand, ValueEnum};
 // A struct that represent the task.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -99,5 +100,28 @@ struct Cli {
 
 
 fn main() {
-    let _cli = Cli::parse();
+    
+
+
+    // let _cli = Cli::parse();
 }
+
+fn read_tasks() -> Vec<Task> {
+    let mut content = String::new();
+    let mut file = OpenOptions::new().read(true).open("tasks.json").expect("Unable to open file.");
+
+    file.read_to_string(&mut content).expect("Unable to read file");
+
+    let tasks: Vec<Task> = serde_json::from_str(&content).expect("Unable to convert tasks");
+
+    tasks
+}
+
+fn write_tasks(tasks: Vec<Task>) {
+    let mut file = OpenOptions::new().write(true).truncate(true).create(true).open("tasks.json").expect("Unable to open file.");
+    let content = serde_json::to_string(&tasks).expect("Unable to convert into json");
+
+    file.write_all(&content.as_bytes()).expect("Unable to write to a file");
+}
+
+
