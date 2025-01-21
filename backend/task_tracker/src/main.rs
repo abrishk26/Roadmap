@@ -3,7 +3,7 @@ use clap::{Parser, Args, Subcommand, ValueEnum};
 // A struct that represent the task.
 #[derive(serde::Deserialize, serde::Serialize)]
 struct Task {
-    id: i32,
+    id: u16,
     description: String,
     status: String,
     created_at: chrono::DateTime<chrono::Utc>,
@@ -97,29 +97,71 @@ struct Cli {
 
 }
 
-
-
 fn main() {
+    let cli = Cli::parse();
+
+    match &cli.command {
+        Commands::Add(add_args) => {
+            add_task(&add_args.description);
+        }
+        ,
+        Commands::Delete(delete_args) => {
+            delete_task(delete_args.task_id);
+        },
+        _ => {
+            
+        }
+    }
     
 
 
-    // let _cli = Cli::parse();
+}
+
+fn add_task(description: &str) {
+    let mut tasks = read_tasks();
+
+    let task = Task{
+        id: tasks.len() as u16 + 1,
+        description: description.to_string(),
+        status: "todo".to_string(),
+        created_at: chrono::Utc::now(),
+        updated_at: chrono::Utc::now()
+    };
+
+    tasks.push(task);
+
+    write_tasks(tasks);
+}
+
+fn delete_task(task_id: u16) {
+    let mut tasks = read_tasks();
+
+    let index = tasks.iter().position(|n| n.id == task_id).expect("The element with the specified id does not exist");
+
+    let _ = tasks.remove(index);
+
+    write_tasks(tasks);
 }
 
 fn read_tasks() -> Vec<Task> {
     let mut content = String::new();
-    let mut file = OpenOptions::new().read(true).open("tasks.json").expect("Unable to open file.");
+    let mut file = OpenOptions::new().read(true).write(true).create(true).open("tasks.json").expect("Unable to open file.");
+    let tasks: Vec<Task>;
 
     file.read_to_string(&mut content).expect("Unable to read file");
 
-    let tasks: Vec<Task> = serde_json::from_str(&content).expect("Unable to convert tasks");
+    if content.trim().len() == 0 {
+        tasks = Vec::new();
+    } else {
+        tasks = serde_json::from_str(&content).expect("Unable to convert tasks");
+    }
 
     tasks
 }
 
 fn write_tasks(tasks: Vec<Task>) {
     let mut file = OpenOptions::new().write(true).truncate(true).create(true).open("tasks.json").expect("Unable to open file.");
-    let content = serde_json::to_string(&tasks).expect("Unable to convert into json");
+    let content = serde_json::to_string_pretty(&tasks).expect("Unable to convert into json");
 
     file.write_all(&content.as_bytes()).expect("Unable to write to a file");
 }
