@@ -36,12 +36,14 @@ task_tracker <command> [arguments]
 ```
 
 ## Commands
+```sh
 add <description>: Add a new task with the given description.
 list <mode>: List tasks based on the mode (all, done, todo, in-progress).
 update <task_id> <description>: Update the task with the specified ID.
 delete <task_id>: Delete the task with the specified ID.
 mark-done <task_id>: Mark the task with the specified ID as done.
 mark-in-progress <task_id>: Mark the task with the specified ID as in-progress.
+```
 
 ## Examples
 Add a new task:
