@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "description": "First task",
+    "status": "todo",
+    "created_at": "2025-01-21T14:16:37.897157241Z",
+    "updated_at": "2025-01-21T14:16:37.897161304Z"
+  }
+]
