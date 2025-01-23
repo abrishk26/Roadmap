@@ -2,6 +2,8 @@
 
 This project fetches and displays the recent activity events of a specified GitHub user in a table format.
 
+Sample solution for the [github_user_activity](Sample solution for the [task-tracker](https://roadmap.sh/projects/task-tracker) challenge from [roadmap.sh](https://roadmap.sh).) challenge from [roadmap.sh](https://roadmap.sh).
+
 ## Prerequisites
 
 - Bun
