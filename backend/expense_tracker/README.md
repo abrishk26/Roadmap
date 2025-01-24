@@ -1,6 +1,8 @@
 # Expense Tracker CLI
 
 This is a **command-line interface (CLI) application** built using Python and Typer for managing and tracking expenses. The application allows users to add, list, summarize, and delete expenses stored in a JSON file.
+Sample solution for the [expense-tracker](https://roadmap.sh/projects/expense-tracker) challenge from [roadmap.sh](https://roadmap.sh).)
+
 
 
 ## Demo
