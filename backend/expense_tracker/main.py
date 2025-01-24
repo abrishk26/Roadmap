@@ -36,7 +36,7 @@ def add(
     now = date.today()
     expenses = lib.read_data(fileName)
     expense = {
-        "ID": len(expenses) + 1, # type: ignore
+        "ID": int(expenses[len(expenses) - 1]["ID"]) + 1, # type: ignore
         "Description": description, # type: ignore
         "Amount": amount, # type: ignore
         "Date": now.strftime("%d-%m-%y"), # type: ignore
