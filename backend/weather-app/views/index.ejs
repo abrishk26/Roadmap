@@ -5,7 +5,30 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <header>
+      <h1>Weatherly</h1>
+      <p>Your simple weather companion</p>
+    </header>
+    <main>
+      <section class="search">
+        <h2>Search for your city</h2>
+        <form action="/weather" method="get">
+          <input type="text" name="city" placeholder="Enter city name" required />
+          <button type="submit">Get Weather</button>
+        </form>
+      </section>
+      <section class="features">
+        <h2>Features</h2>
+        <ul>
+          <li>Real-time weather updates</li>
+          <li>7-day weather forecast</li>
+          <li>Weather alerts and warnings</li>
+          <li>Detailed weather information</li>
+        </ul>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2023 WeatherApp. All rights reserved.</p>
+    </footer>
   </body>
 </html>
