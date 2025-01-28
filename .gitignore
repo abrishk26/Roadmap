@@ -3,3 +3,5 @@
 **/tasks.json
 **/.venv
 **/*.env
+**/dump.rdb
+**/appendonly.aof
