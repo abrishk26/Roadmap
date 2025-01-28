@@ -10,7 +10,7 @@ This is a weather app that allows users to view current weather conditions and f
 1. Clone the repository:
    ```sh
    git clone <repository-url>
-   cd task_tracker
+   cd weather-app
    ```
 
 ## Usage
