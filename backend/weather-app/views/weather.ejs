@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .section h2 {
+      margin-top: 0;
+    }
+    .section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .section ul li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Information for <%= data.resolvedAddress %></h1>
+
+    <!-- General Information -->
+    <div class="section">
+      <h2>General Information</h2>
+      <ul>
+        <li><strong>Query Cost:</strong> <%= data.queryCost %></li>
+        <li><strong>Latitude:</strong> <%= data.latitude %></li>
+        <li><strong>Longitude:</strong> <%= data.longitude %></li>
+        <li><strong>Resolved Address:</strong> <%= data.resolvedAddress %></li>
+        <li><strong>Address:</strong> <%= data.address %></li>
+        <li><strong>Timezone:</strong> <%= data.timezone %></li>
+        <li><strong>Timezone Offset:</strong> <%= data.tzoffset %></li>
+        <li><strong>Description:</strong> <%= data.description %></li>
+      </ul>
+    </div>
+
+    <!-- Current Conditions -->
+    <div class="section">
+      <h2>Current Conditions</h2>
+      <ul>
+        <li><strong>Datetime:</strong> <%= data.currentConditions.datetime %></li>
+        <li><strong>Temperature:</strong> <%= data.currentConditions.temp %>°F</li>
+        <li><strong>Feels Like:</strong> <%= data.currentConditions.feelslike %>°F</li>
+        <li><strong>Humidity:</strong> <%= data.currentConditions.humidity %>%</li>
+        <li><strong>Dew Point:</strong> <%= data.currentConditions.dew %>°F</li>
+        <li><strong>Wind Speed:</strong> <%= data.currentConditions.windspeed %> mph</li>
+        <li><strong>Wind Direction:</strong> <%= data.currentConditions.winddir %>°</li>
+        <li><strong>Pressure:</strong> <%= data.currentConditions.pressure %> hPa</li>
+        <li><strong>Visibility:</strong> <%= data.currentConditions.visibility %> miles</li>
+        <li><strong>Cloud Cover:</strong> <%= data.currentConditions.cloudcover %>%</li>
+        <li><strong>UV Index:</strong> <%= data.currentConditions.uvindex %></li>
+        <li><strong>Conditions:</strong> <%= data.currentConditions.conditions %></li>
+        <li><strong>Sunrise:</strong> <%= data.currentConditions.sunrise %></li>
+        <li><strong>Sunset:</strong> <%= data.currentConditions.sunset %></li>
+      </ul>
+    </div>
+
+    <!-- Daily Forecast -->
+    <div class="section">
+      <h2>Daily Forecast</h2>
+      <% data.days.forEach(day => { %>
+        <div>
+          <h3><%= day.datetime %></h3>
+          <ul>
+            <li><strong>Max Temperature:</strong> <%= day.tempmax %>°F</li>
+            <li><strong>Min Temperature:</strong> <%= day.tempmin %>°F</li>
+            <li><strong>Average Temperature:</strong> <%= day.temp %>°F</li>
+            <li><strong>Feels Like:</strong> <%= day.feelslike %>°F</li>
+            <li><strong>Humidity:</strong> <%= day.humidity %>%</li>
+            <li><strong>Precipitation:</strong> <%= day.precip %> inches</li>
+            <li><strong>Precipitation Probability:</strong> <%= day.precipprob %>%</li>
+            <li><strong>Wind Speed:</strong> <%= day.windspeed %> mph</li>
+            <li><strong>Wind Direction:</strong> <%= day.winddir %>°</li>
+            <li><strong>Pressure:</strong> <%= day.pressure %> hPa</li>
+            <li><strong>Cloud Cover:</strong> <%= day.cloudcover %>%</li>
+            <li><strong>UV Index:</strong> <%= day.uvindex %></li>
+            <li><strong>Conditions:</strong> <%= day.conditions %></li>
+            <li><strong>Description:</strong> <%= day.description %></li>
+            <li><strong>Sunrise:</strong> <%= day.sunrise %></li>
+            <li><strong>Sunset:</strong> <%= day.sunset %></li>
+          </ul>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Weather Stations -->
+    <div class="section">
+      <h2>Weather Stations</h2>
+      <ul>
+        <% for (const [key, station] of Object.entries(data.stations)) { %>
+          <li>
+            <strong><%= station.name %> (<%= station.id %>)</strong>
+            <ul>
+              <li><strong>Distance:</strong> <%= station.distance %> meters</li>
+              <li><strong>Latitude:</strong> <%= station.latitude %></li>
+              <li><strong>Longitude:</strong> <%= station.longitude %></li>
+              <li><strong>Quality:</strong> <%= station.quality %></li>
+            </ul>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
