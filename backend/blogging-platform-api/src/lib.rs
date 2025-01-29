@@ -47,6 +47,10 @@ mod tests {
         assert_eq!(result.title, String::from("Update title"));
         assert_eq!(result.tags, vec!["Tech".to_string(), "Programming".to_string()]);
         
+        let result = delete_post(&pool, 1).await?;
+        assert_eq!(result.id, 1);
+        assert_eq!(result.title, String::from("Update title"));
+        
         Ok(())
     }
     

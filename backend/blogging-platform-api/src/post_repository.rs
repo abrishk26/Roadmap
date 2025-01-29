@@ -46,7 +46,7 @@ pub async fn filter_posts(conn: &PgPool, pattern: &str) -> Result<Vec<Post>, sql
 }
 
 pub async fn update_post(conn: &PgPool, post_id: i32, update_info: UpdatePost) -> Result<Post, sqlx::Error> {
-    let record: Post = query_as("SELECT * FROM posts where id = $1")
+    let record: Post = query_as("SELECT * FROM posts WHERE id = $1")
         .bind(post_id)
         .fetch_one(conn)
         .await?;
@@ -66,4 +66,13 @@ pub async fn update_post(conn: &PgPool, post_id: i32, update_info: UpdatePost) -
         .await?;
     
     Ok(result)
+}
+
+pub async fn delete_post(conn: &PgPool, post_id: i32) -> Result<Post, sqlx::Error> {
+    let record = query_as("DELETE FROM posts WHERE id = $1 RETURNING *")
+        .bind(post_id)
+        .fetch_one(conn)
+        .await?;
+    
+    Ok(record)
 }
