@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(app_state.clone())
             .service(handlers::create)
             .service(handlers::get_post)
+            .service(handlers::get_posts)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
