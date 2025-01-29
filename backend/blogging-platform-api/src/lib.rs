@@ -21,7 +21,7 @@ mod tests {
             updated_at: Utc::now(), 
         };
         
-        let result = create_posts(&pool, &post).await?;
+        let result = create_post(&pool, &post).await?;
         assert_eq!(post.title, result.title);
         
         let result = select_post(&pool, 1).await?;

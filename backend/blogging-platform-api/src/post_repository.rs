@@ -1,7 +1,7 @@
 use sqlx::{query_as, PgPool};
 use super::models::*;
 
-pub async fn create_posts(conn: &PgPool, post: &Post) -> Result<Post, sqlx::Error> {
+pub async fn create_post(conn: &PgPool, post: &Post) -> Result<Post, sqlx::Error> {
     let result = query_as("INSERT INTO posts(title, content, category, tags, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *")
         .bind(&post.title)
         .bind(&post.content)
