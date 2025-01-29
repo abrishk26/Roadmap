@@ -157,6 +157,7 @@ name = "blogging-platform-api"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "dotenvy",
  "sqlx",
  "tokio",
  "tower",
