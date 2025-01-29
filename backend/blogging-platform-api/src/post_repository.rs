@@ -1,4 +1,3 @@
-use std::error::Error;
 use sqlx::Row;
 use super::models::*;
 use sqlx::PgConnection;
@@ -26,3 +25,19 @@ pub async fn create_posts(conn: &mut PgConnection, post: &Post) -> Result<Post, 
     })
 }
 
+pub async fn select_post(conn: &mut PgConnection, post_id: i32) -> Result<Post, sqlx::Error> {
+    let result = query("SELECT FROM posts where id = $1")
+        .bind(post_id)
+        .fetch_one(conn)
+        .await?;
+    
+    Ok(Post {
+        id: result.get("id"),
+        title: result.get("title"),
+        content: result.get("content"),
+        category: result.get("category"),
+        tags: result.get("tags"),
+        created_at: result.get("created_at"),
+        updated_at: result.get("updated_at")
+    })
+}

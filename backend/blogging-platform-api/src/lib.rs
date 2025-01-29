@@ -1,5 +1,3 @@
-use sqlx::PgPool;
-
 mod db;
 mod models;
 mod post_repository;
@@ -11,7 +9,7 @@ mod tests {
     use super::*;
     
     #[sqlx::test]
-    async fn test_create_post(pool: PgPool) -> sqlx::Result<()> {
+    async fn test_create_post(pool: sqlx::PgPool) -> sqlx::Result<()> {
         let mut conn = pool.acquire().await?;
         
         let post = Post {
@@ -27,6 +25,10 @@ mod tests {
         let result = create_posts(&mut conn, &post).await?;
         
         assert_eq!(post.title, result.title);
+        
+        let result = select_post(&mut conn, 1).await?;
+        
+        assert_eq!(result.id, 1);
         
         Ok(())
     }
