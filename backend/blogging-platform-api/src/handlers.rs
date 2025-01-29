@@ -63,6 +63,28 @@ pub async fn get_post(state: web::Data<AppState>, post_id: web::Path<i32>) -> Ht
                 _ => HttpResponse::InternalServerError().body("Internal server error"),
             }
         }
-    }
+    } 
+}
+
+#[get("/posts")]
+pub async fn get_posts(state: web::Data<AppState>) -> HttpResponse {
+    let result = select_posts(&state.conn).await;
     
+    match result {
+        Ok(p) => HttpResponse::Ok().json(p),
+        Err(err) => {
+            // Handle specific errors
+            match err {
+                sqlx::Error::Database(db_err) => {
+                    // Check for unique constraint violations or other database errors
+                    if db_err.message().contains("unique constraint") {
+                        HttpResponse::BadRequest().body("Duplicate entry: title must be unique")
+                    } else {
+                        HttpResponse::InternalServerError().body("Internal server error")
+                    }
+                }
+                _ => HttpResponse::InternalServerError().body("Internal server error"),
+            }
+        }
+    }  
 }
