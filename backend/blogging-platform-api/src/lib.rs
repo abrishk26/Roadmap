@@ -30,6 +30,10 @@ mod tests {
         
         assert_eq!(result.id, 1);
         
+        let result = select_posts(&mut conn).await?;
+        
+        assert_eq!(result.len(), 1);
+        
         Ok(())
     }
     
