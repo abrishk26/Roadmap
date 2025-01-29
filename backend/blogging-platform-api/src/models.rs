@@ -2,6 +2,7 @@ pub use chrono::prelude::*;
 use sqlx::FromRow;
 
 #[derive(FromRow)]
+#[derive(serde::Serialize)]
 pub struct Post {
     pub id: i32,
     pub title: String,
