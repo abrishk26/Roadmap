@@ -11,3 +11,10 @@ pub struct Post {
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>
 }
+
+pub struct UpdatePost {
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub category: Option<String>,
+    pub tags: Option<Vec<String>>
+}
