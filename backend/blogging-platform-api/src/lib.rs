@@ -23,16 +23,20 @@ mod tests {
         };
         
         let result = create_posts(&mut conn, &post).await?;
-        
         assert_eq!(post.title, result.title);
         
         let result = select_post(&mut conn, 1).await?;
-        
         assert_eq!(result.id, 1);
         
         let result = select_posts(&mut conn).await?;
-        
         assert_eq!(result.len(), 1);
+        
+        let result = filter_posts(&mut conn, "demo").await?;
+        assert_eq!(result.len(), 0);
+        
+        let result = filter_posts(&mut conn, "Test").await?;
+        assert_eq!(result.len(), 1);
+        
         
         Ok(())
     }

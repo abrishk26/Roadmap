@@ -50,3 +50,16 @@ pub async fn select_posts(conn: &mut PgConnection) -> Result<Vec<Post>, sqlx::Er
     
     Ok(result)
 }
+
+pub async fn filter_posts(conn: &mut PgConnection, pattern: &str) -> Result<Vec<Post>, sqlx::Error> {
+    let result: Vec<Post> = query_as("SELECT * FROM posts")
+        .fetch_all(conn)
+        .await?;
+    let mut response: Vec<Post> = Vec::new();
+    for post in result {
+        if post.title.as_str().contains(pattern) || post.content.as_str().contains(pattern) || post.category.as_str().contains(pattern) {
+            response.push(post);
+        }
+    }
+    Ok(response)
+}
