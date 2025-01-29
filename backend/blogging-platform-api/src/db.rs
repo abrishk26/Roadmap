@@ -10,5 +10,5 @@ pub async fn establish_connection() -> Result<PgPool, Box<dyn Error>> {
     let pool = PgPoolOptions::new()
         .max_connections(10)
         .connect(&database_url).await?;
-    return pool;
+    return Ok(pool);
 }
