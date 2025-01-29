@@ -4,8 +4,8 @@ use super::models::*;
 use sqlx::PgConnection;
 use sqlx::query;
 
-pub async fn create_posts(conn: &mut PgConnection, post: &Post) -> Result<Post, Box<dyn Error>> {
-    let result = query("INSERT INTO posts VALUES($1, $2, $3, $4, $5, $6) RETURNING *")
+pub async fn create_posts(conn: &mut PgConnection, post: &Post) -> Result<Post, sqlx::Error> {
+    let result = query("INSERT INTO posts(title, content, category, tags, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *")
         .bind(&post.title)
         .bind(&post.content)
         .bind(&post.category)
@@ -25,3 +25,4 @@ pub async fn create_posts(conn: &mut PgConnection, post: &Post) -> Result<Post, 
         updated_at: result.get("updated_at")
     })
 }
+
