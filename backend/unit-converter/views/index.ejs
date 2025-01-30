@@ -173,9 +173,18 @@
       fetch('/convert', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value, fromUnit: fromUnit.toLowerCase(), toUnit: toUnit.toLowerCase(), type: currentType })
+        body: JSON.stringify({ value, fromUnit, toUnit, type: currentType })
       })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        // Redirect to the /result route
+        window.location.href = response.url;
+        })
         .catch(error => console.error('Error:', error));
+
     }
 
     // Set default converter type to length
