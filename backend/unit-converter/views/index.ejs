@@ -1,162 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Converter</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .converter-type {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        .converter-type button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .converter-type button.active {
-            background-color: #0056b3;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .convert-button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .convert-button:hover {
-            background-color: #218838;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .converter-type {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .converter-type button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .converter-type button.active {
+      background-color: #0056b3;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .input-group input {
+      width: 95%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .convert-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .convert-button:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Unit Converter</h1>
+  <div class="container">
+    <h1>Unit Converter</h1>
 
-        <div class="converter-type">
-            <button id="lengthBtn" onclick="setConverterType('length')">Length</button>
-            <button id="weightBtn" onclick="setConverterType('weight')">Weight</button>
-            <button id="tempBtn" onclick="setConverterType('temp')">Temperature</button>
-        </div>
-
-        <div class="input-group">
-            <label for="value">Enter the value to convert</label>
-            <input type="number" id="value" placeholder="Enter value">
-        </div>
-
-        <div class="input-group">
-            <label for="fromUnit">Unit to Convert from</label>
-            <select id="fromUnit">
-                <!-- Options will be populated dynamically based on the converter type -->
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="toUnit">Unit to Convert to</label>
-            <select id="toUnit">
-                <!-- Options will be populated dynamically based on the converter type -->
-            </select>
-        </div>
-
-        <button class="convert-button" onclick="convert()">Convert</button>
+    <div class="converter-type">
+      <button id="lengthBtn" onclick="setConverterType('length')">Length</button>
+      <button id="weightBtn" onclick="setConverterType('weight')">Weight</button>
+      <button id="tempBtn" onclick="setConverterType('temp')">Temperature</button>
     </div>
 
-    <script>
-        const units = {
-            length: ['millimeter', 'centimeter', 'meter', 'kilometer', 'inch', 'foot', 'yard', 'mile'],
-            weight: ['milligram', 'gram', 'kilogram', 'ounce', 'pound'],
-            temp: ['Celsius', 'Fahrenheit', 'Kelvin']
-        };
+    <div class="input-group">
+      <label for="value">Enter the value to convert</label>
+      <input type="number" id="value" placeholder="Enter value">
+    </div>
 
-        let currentType = 'length'; // Default converter type
+    <div class="input-group">
+      <label for="fromUnit">Unit to Convert from</label>
+      <select id="fromUnit">
+        <!-- Options will be populated dynamically based on the converter type -->
+      </select>
+    </div>
 
-        function setConverterType(type) {
-            currentType = type;
+    <div class="input-group">
+      <label for="toUnit">Unit to Convert to</label>
+      <select id="toUnit">
+        <!-- Options will be populated dynamically based on the converter type -->
+      </select>
+    </div>
 
-            // Update button active state
-            document.getElementById('lengthBtn').classList.remove('active');
-            document.getElementById('weightBtn').classList.remove('active');
-            document.getElementById('tempBtn').classList.remove('active');
-            document.getElementById(`${type}Btn`).classList.add('active');
+    <button class="convert-button" onclick="convert()">Convert</button>
+  </div>
 
-            const fromUnit = document.getElementById('fromUnit');
-            const toUnit = document.getElementById('toUnit');
+  <script>
+    const units = {
+      length: ['millimeter', 'centimeter', 'meter', 'kilometer', 'inch', 'foot', 'yard', 'mile'],
+      weight: ['milligram', 'gram', 'kilogram', 'ounce', 'pound'],
+      temp: ['Celsius', 'Fahrenheit', 'Kelvin']
+    };
 
-            // Clear existing options
-            fromUnit.innerHTML = '';
-            toUnit.innerHTML = '';
+    let currentType = 'length'; // Default converter type
 
-            // Add new options based on the selected type
-            units[type].forEach(unit => {
-                const option = document.createElement('option');
-                option.value = unit;
-                option.textContent = unit;
-                fromUnit.appendChild(option);
-            });
+    function setConverterType(type) {
+      currentType = type;
 
-            units[type].forEach(unit => {
-                const option = document.createElement('option');
-                option.value = unit;
-                option.textContent = unit;
-                toUnit.appendChild(option);
-            });
-        }
+      // Update button active state
+      document.getElementById('lengthBtn').classList.remove('active');
+      document.getElementById('weightBtn').classList.remove('active');
+      document.getElementById('tempBtn').classList.remove('active');
+      document.getElementById(`${type}Btn`).classList.add('active');
 
-        function convert() {
-            const value = parseFloat(document.getElementById('value').value);
-            const fromUnit = document.getElementById('fromUnit').value;
-            const toUnit = document.getElementById('toUnit').value;
+      const fromUnit = document.getElementById('fromUnit');
+      const toUnit = document.getElementById('toUnit');
 
-            if (isNaN(value)) {
-                alert('Please enter a valid number.');
-                return;
-            }
+      // Clear existing options
+      fromUnit.innerHTML = '';
+      toUnit.innerHTML = '';
 
-            // Perform conversion logic here (you can call your API)
-            alert(`Converted ${value} ${fromUnit} to ${toUnit}`);
-        }
+      // Add new options based on the selected type
+      units[type].forEach(unit => {
+        const option = document.createElement('option');
+        option.value = unit;
+        option.textContent = unit;
+        fromUnit.appendChild(option);
+      });
 
-        // Set default converter type to length
-        setConverterType('length');
-    </script>
+      units[type].forEach(unit => {
+        const option = document.createElement('option');
+        option.value = unit;
+        option.textContent = unit;
+        toUnit.appendChild(option);
+      });
+    }
+
+    function convert() {
+
+      const value = parseFloat(document.getElementById('value').value);
+      const fromUnit = document.getElementById('fromUnit').value;
+      const toUnit = document.getElementById('toUnit').value;
+
+      if (isNaN(value)) {
+        alert('Please enter a valid number.');
+        return;
+      }
+
+      fetch('/convert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value, fromUnit: fromUnit.toLowerCase(), toUnit: toUnit.toLowerCase(), type: currentType })
+      })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Set default converter type to length
+    setConverterType('length');
+  </script>
 </body>
+
 </html>
