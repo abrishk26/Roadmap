@@ -1,4 +1,4 @@
-use actix_web::{put, post, get, web, HttpResponse};
+use actix_web::{delete, put, post, get, web, HttpResponse};
 
 use super::AppState;
 use db_helper::*;
@@ -120,6 +120,29 @@ pub async fn get_filtered_posts(state: web::Data<AppState>, text_info: web::Quer
 #[put("/posts/{post_id}")]
 pub async fn update(state: web::Data<AppState>, post_id: web::Path<i32>, update_info: web::Json<UpdatePost>) -> HttpResponse {
     let result = update_post(&state.conn, post_id.into_inner(), update_info.into_inner()).await;
+    
+    match result {
+        Ok(p) => HttpResponse::Ok().json(p),
+        Err(err) => {
+            // Handle specific errors
+            match err {
+                sqlx::Error::Database(db_err) => {
+                    // Check for unique constraint violations or other database errors
+                    if db_err.message().contains("unique constraint") {
+                        HttpResponse::BadRequest().body("Duplicate entry: title must be unique")
+                    } else {
+                        HttpResponse::InternalServerError().body("Internal server error")
+                    }
+                }
+                _ => HttpResponse::InternalServerError().body("Internal server error"),
+            }
+        }
+    }
+}
+
+#[delete("/posts/{post_id}")]
+pub async fn delete(state: web::Data<AppState>, post_id: web::Path<i32>) -> HttpResponse {
+    let result = delete_post(&state.conn, post_id.into_inner()).await;
     
     match result {
         Ok(p) => HttpResponse::Ok().json(p),
