@@ -24,6 +24,7 @@ async fn main() -> std::io::Result<()> {
             .service(handlers::create)
             .service(handlers::get_post)
             .service(handlers::get_posts)
+            .service(handlers::get_filtered_posts)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
