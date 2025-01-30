@@ -124,3 +124,18 @@ function convertTemperature(value, fromUnit, toUnit) {
     }
 }
 
+function performConversion(value, fromUnit, toUnit, type) {
+    switch (type) {
+        case 'length':
+            return convertLength(value, fromUnit, toUnit);
+        case 'weight':
+            return convertWeight(value, fromUnit, toUnit);
+        case 'temp':
+            return convertTemperature(value, fromUnit, toUnit);
+        default:
+            throw new Error('Unsupported conversion type');
+    }
+}
+
+module.exports = performConversion;
+
