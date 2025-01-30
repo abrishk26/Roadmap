@@ -13,6 +13,7 @@ pub struct Post {
     pub updated_at: DateTime<Utc>
 }
 
+#[derive(serde::Deserialize)]
 pub struct UpdatePost {
     pub title: Option<String>,
     pub content: Option<String>,
