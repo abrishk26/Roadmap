@@ -11,6 +11,11 @@ struct CreatePost {
     tags: Vec<String>,
 }
 
+#[derive(serde::Deserialize)]
+struct FilterInfo {
+    pattern: String
+}
+
 #[post("/posts")]
 pub async fn create(state: web::Data<AppState>, payload: web::Json<CreatePost>) -> HttpResponse {
     let post = Post {
@@ -87,4 +92,27 @@ pub async fn get_posts(state: web::Data<AppState>) -> HttpResponse {
             }
         }
     }  
+}
+
+#[get("/posts")]
+pub async fn get_filtered_posts(state: web::Data<AppState>, text_info: web::Query<FilterInfo>) -> HttpResponse {
+    let result = filter_posts(&state.conn, &text_info.pattern).await;
+    
+    match result {
+        Ok(p) => HttpResponse::Ok().json(p),
+        Err(err) => {
+            // Handle specific errors
+            match err {
+                sqlx::Error::Database(db_err) => {
+                    // Check for unique constraint violations or other database errors
+                    if db_err.message().contains("unique constraint") {
+                        HttpResponse::BadRequest().body("Duplicate entry: title must be unique")
+                    } else {
+                        HttpResponse::InternalServerError().body("Internal server error")
+                    }
+                }
+                _ => HttpResponse::InternalServerError().body("Internal server error"),
+            }
+        }
+    }
 }
