@@ -6,9 +6,9 @@ const hardCodedAdmin = {
   password: "password123"
 };
 
-// router.get('/', (req, res) => {
-//   res.render('login')
-// });
+router.get('/login', (req, res) => {
+  res.render('login')
+});
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;

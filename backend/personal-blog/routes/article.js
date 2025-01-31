@@ -25,25 +25,28 @@ router.get('/update/:id', isAuthenticated, (req, res) => {
 });
 
 router.get('/delete/:id', isAuthenticated, (req, res) => {
-  const articles = file.readArticles();
+  let articles = file.readArticles();
   const articleId = parseInt(req.params.id);
   
   const article = articles.find(a => a.id === articleId)
   const index = articles.indexOf(article);
   
+  console.log(index);
+  console.log(article);
   if (index > -1) {
     articles.pop(index);
     file.writeArticles(articles);
   }
   
-  res.redirect('/admin')
+  articles = file.readArticles();
+  res.render('admin', { articles });
 })
 
 router.post('/new', isAuthenticated, (req, res) => {
-  const articles = file.readArticles();
-  const id = 1
+  let articles = file.readArticles();
+  let id = 1
   if (articles.length > 0) {
-    id = articles[articles[(articles.length - 1).toString()]] + 1
+    id = articles[articles.length - 1].id + 1
   }
   const newArticle = {
     id,
@@ -54,11 +57,12 @@ router.post('/new', isAuthenticated, (req, res) => {
   
   articles.push(newArticle);
   file.writeArticles(articles);
-  res.redirect("/admin")
+  articles = file.readArticles();
+  res.render('admin', { articles })
 });
 
 router.post('/update/:id', isAuthenticated, (req, res) => {
-  const articles = file.readArticles();
+  let articles = file.readArticles();
   const articleId = parseInt(req.params.id);
   console.log(articleId);
   const article = articles.find(a => a.id === articleId);
@@ -73,7 +77,8 @@ router.post('/update/:id', isAuthenticated, (req, res) => {
     console.log('Article not found.');
   }
   
-  res.redirect('/admin')
+  articles = file.readArticles();
+  res.render('admin', { articles });
 })
 
 module.exports = router;
