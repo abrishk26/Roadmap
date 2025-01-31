@@ -10,4 +10,5 @@ This is a repository which contains implementation of projects from [Roadmap](ht
 - [weather-app](https://roadmap.sh/projects/weather-api-wrapper-service)
 - [bloggin-platform-api](https://roadmap.sh/projects/blogging-platform-api)
 - [unit-converter](https://roadmap.sh/projects/unit-converter)
+- [personal-blog](https://roadmap.sh/projects/personal-blog)
   
