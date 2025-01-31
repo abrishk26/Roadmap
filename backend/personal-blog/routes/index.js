@@ -1,13 +1,19 @@
-import express from 'express';
+const express = require('express');
+const isAuthenticated = require('../auth');
 const router = express.Router();
+const file = require('../file-handler');
 
-const articles = [
-  { title: "First Title", date: "22-32-32" },
-  { title: "Second Title", date: "23-32-32" }
-];
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  const articles = file.readArticles();
   res.render('index', { articles: articles });
 });
+
+router.get('/admin', isAuthenticated, (req, res) => {
+  const articles = file.readArticles();
+  res.render('admin', { articles });
+})
+
+
 
 module.exports = router;
