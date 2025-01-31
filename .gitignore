@@ -5,3 +5,4 @@
 **/*.env
 **/dump.rdb
 **/appendonly.aof
+**/articles.json
