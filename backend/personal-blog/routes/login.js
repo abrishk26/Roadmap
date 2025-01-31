@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const hardCodedAdmin = require('../config').hardCodedAdmin;
 
-const hardCodedAdmin = {
-  email: "admin@example.com",
-  password: "password123"
-};
 
 router.get('/login', (req, res) => {
   res.render('login')
