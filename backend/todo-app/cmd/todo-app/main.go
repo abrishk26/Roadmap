@@ -51,6 +51,7 @@ func main() {
 	})
 	
 	r.POST("/register", handlers.RegisterHandler(&userRepo))
+	r.POST("/login", handlers.LoginHandler(&userRepo))
 	
 	r.Run("127.0.0.1:3000")
 }
