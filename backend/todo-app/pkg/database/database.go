@@ -1,10 +1,8 @@
 package database
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"github.com/uptrace/bun"
     _ "github.com/lib/pq" 
 
