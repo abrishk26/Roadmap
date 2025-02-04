@@ -1,27 +1,26 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
+	"database/sql"
 	"github.com/uptrace/bun"
-    _ "github.com/lib/pq" 
-
+	"github.com/uptrace/bun/dialect/pgdialect"
+	"github.com/uptrace/bun/driver/pgdriver"
 )
 
-// InitDB initializesthe database connection
+// InitDB initializes the database connection
 func InitDB(connString string) (*bun.DB, error) {
-	sqldb, err := sql.Open("postgres", connString)
-	
-	if err != nil {
-		return nil, err
+	// Use Bun's pgdriver instead of sql.Open
+	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(connString)))
+
+	// Create a Bun DB instance with the PostgreSQL dialect
+	db := bun.NewDB(sqldb, pgdialect.New())
+
+	// Ping the database to check if the connection works
+	if err := db.Ping(); err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
-	
-	db := bun.NewDB(sqldb, nil)
-	
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-	
-	fmt.Println("Successfully connected to a database.")
+
+	fmt.Println("✅ Successfully connected to the database.")
 	return db, nil
 }
