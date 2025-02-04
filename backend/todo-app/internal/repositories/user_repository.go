@@ -7,17 +7,17 @@ import (
 )
 
 type UserRepository struct {
-	db *bun.DB
+	Db *bun.DB
 }
 
 func NewUserRepository(db *bun.DB) *UserRepository {
-	return &UserRepository{ db: db}
+	return &UserRepository{ Db: db}
 }
 
 func (r *UserRepository) FindByEmail(email string, ctx context.Context) (*models.User, error) {
 	user := new(models.User)
 	
-	err := r.db.NewSelect().Model(user).Where("email = ?", email).Scan(ctx)
+	err := r.Db.NewSelect().Model(user).Where("email = ?", email).Scan(ctx)
 	
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func (r *UserRepository) FindByEmail(email string, ctx context.Context) (*models
 }
 
 func (r *UserRepository) Create(ctx context.Context, user *models.User) (*models.User, error) {
-	_, err := r.db.NewInsert().Model(user).Returning("*").Exec(ctx)
+	_, err := r.Db.NewInsert().Model(user).Returning("*").Exec(ctx)
 	
 	if err != nil {
 		return nil, err
