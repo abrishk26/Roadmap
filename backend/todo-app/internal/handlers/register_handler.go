@@ -27,6 +27,22 @@ func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 			})
 			return
 		}
+		
+		ctx := context.Background()
+		existingUser, err := userRepo.FindByEmail(ctx, req.Email)
+		
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		if existingUser != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "user with this email already exists",
+			})
+			return
+		}
 
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 
@@ -37,7 +53,6 @@ func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 			return
 		}
 
-		ctx := context.Background()
 		newUser := models.User{
 			ID:           uuid.New(),
 			Name:         req.Name,
