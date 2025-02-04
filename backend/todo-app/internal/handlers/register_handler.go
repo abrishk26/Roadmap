@@ -17,7 +17,7 @@ type RegisterRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func RegisterHandler(c *gin.Context, userRepo *repository.UserRepository) gin.HandlerFunc {
+func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req RegisterRequest
 
