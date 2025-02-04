@@ -14,7 +14,7 @@ func NewUserRepository(db *bun.DB) *UserRepository {
 	return &UserRepository{ Db: db}
 }
 
-func (r *UserRepository) FindByEmail(email string, ctx context.Context) (*models.User, error) {
+func (r *UserRepository) FindByEmail( ctx context.Context, email string) (*models.User, error) {
 	user := new(models.User)
 	
 	err := r.Db.NewSelect().Model(user).Where("email = ?", email).Scan(ctx)
@@ -27,7 +27,7 @@ func (r *UserRepository) FindByEmail(email string, ctx context.Context) (*models
 }
 
 func (r *UserRepository) Create(ctx context.Context, user *models.User) (*models.User, error) {
-	_, err := r.Db.NewInsert().Model(user).Returning("*").Exec(ctx)
+	err := r.Db.NewInsert().Model(user).Returning("*").Scan(ctx, user)
 	
 	if err != nil {
 		return nil, err
