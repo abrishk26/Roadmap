@@ -1,7 +1,9 @@
 package handlers
 
 import (
-	"context"
+	"database/sql"
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/abrishk26/Roadmap/backend/todo-app/internal/models"
@@ -23,19 +25,24 @@ func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid request",
-			})
-			return
-		}
-		
-		ctx := context.Background()
-		existingUser, err := userRepo.FindByEmail(ctx, req.Email)
-		
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
+			fmt.Println(err.Error())
 			return
+		}
+
+		existingUser, err := userRepo.FindByEmail(c, req.Email)
+
+		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) { // No user found is NOT an error
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+				fmt.Println(err.Error())
+				return // Actual error
+			}
+
 		}
 		if existingUser != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -50,6 +57,7 @@ func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": "Failed to hash passwrod",
 			})
+			fmt.Println(err.Error())
 			return
 		}
 
@@ -60,23 +68,16 @@ func RegisterHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 			PasswordHash: string(hashedPassword),
 		}
 
-		user, err := userRepo.Create(ctx, &newUser)
+		_, err = userRepo.Create(c, &newUser)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": err.Error(),
 			})
-
+			fmt.Println(err.Error())
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"message": "User successfully registered",
-			"user": gin.H{
-				"id":    user.ID,
-				"name":  user.Name,
-				"email": user.Email,
-			},
-		})
+		c.Redirect(http.StatusOK, "/login")
 	}
 }
