@@ -6,6 +6,7 @@ import(
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	repository "github.com/abrishk26/Roadmap/backend/todo-app/internal/repositories"
+	"github.com/abrishk26/Roadmap/backend/todo-app/pkg/jwt"
 )
 
 type LoginRequest struct {
@@ -18,37 +19,33 @@ func LoginHandler(userRepo *repository.UserRepository) gin.HandlerFunc {
 		var req LoginRequest
 		
 		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid request",
-			})
+			c.Redirect(http.StatusBadRequest, "/")
 			return
 		}
 		ctx := context.Background()
 		user, err := userRepo.FindByEmail(ctx, req.Email)
 		
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
+			c.Redirect(http.StatusInternalServerError, "/")
 			return
 		}
 		
 		err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password))
 		
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "Invalid email or password",
-			})
+			c.Redirect(http.StatusBadRequest, "/")
 			return
 		}
 		
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Login completed successfully",
-			"user": gin.H{
-				"name": user.Name,
-				"email": user.Email,
-			},
-		})
+		tokenString, err := jwt.GenerateToken(user.ID.String())
+		
+		if err != nil {
+			c.Redirect(http.StatusInternalServerError, "/")
+			return
+		}
+		
+		c.SetCookie("token", tokenString, 3600, "/", "", false, true)
+		c.Redirect(http.StatusOK, "/tasks")
 	}
 }
 
