@@ -3,7 +3,7 @@ use clap::{Parser, ValueEnum};
 pub struct Cli {
     /// type of movie to display
     #[arg(short, long)]
-    r#type: Mode
+    pub r#type: Mode
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
