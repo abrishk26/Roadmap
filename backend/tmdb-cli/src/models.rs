@@ -8,6 +8,5 @@ pub struct Movie {
 
 #[derive(serde::Deserialize, std::fmt::Debug)]
 pub struct Res {
-    pub page: i64,
     pub results: Vec<Movie>
 }
