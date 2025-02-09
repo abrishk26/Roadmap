@@ -7,7 +7,7 @@ pub struct Cli {
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-enum Mode {
+pub enum Mode {
     PLAYING,
     POPULAR,
     UPCOMING,
