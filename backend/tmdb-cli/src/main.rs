@@ -2,7 +2,7 @@ mod cli;
 mod models;
 use clap::Parser;
 use cli::Mode;
-use comfy_table::Table;
+use comfy_table::{modifiers::UTF8_ROUND_CORNERS, Table};
 use dotenvy::dotenv;
 use reqwest::blocking::Client;
 use std::env;
@@ -32,6 +32,8 @@ fn main() {
     
     let mut table = Table::new();
     table.set_header(vec!["Title", "Overview", "Rating", "Release Date"]);
+    table.apply_modifier(UTF8_ROUND_CORNERS)
+        .set_content_arrangement(comfy_table::ContentArrangement::Dynamic);
     
     match app.r#type {
         Mode::PLAYING => {
