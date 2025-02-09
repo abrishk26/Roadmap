@@ -2,6 +2,7 @@ mod cli;
 mod models;
 use clap::Parser;
 use cli::Mode;
+use comfy_table::Table;
 use dotenvy::dotenv;
 use reqwest::blocking::Client;
 use std::env;
@@ -28,38 +29,60 @@ fn main() {
             return;
         }
     }
-
+    
+    let mut table = Table::new();
+    table.set_header(vec!["Title", "Overview", "Rating", "Release Date"]);
+    
     match app.r#type {
         Mode::PLAYING => {
             let response = make_request("https://api.themoviedb.org/3/movie/now_playing", &api_key);
             match response {
-                Ok(res) => println!("{:?}", res),
+                Ok(res) => {
+                    for m in res.results {
+                        table.add_row(vec![m.title, m.overview, m.vote_average.to_string(), m.release_date]);
+                    }
+                    println!("{table}");
+                },
                 Err(err) => println!("Error: {err}"),
             }
         }
         Mode::POPULAR => {
             let response = make_request("https://api.themoviedb.org/3/movie/popular", &api_key);
             match response {
-                Ok(res) => println!("{:?}", res),
+                Ok(res) => {
+                    for m in res.results {
+                        table.add_row(vec![m.title, m.overview, m.vote_average.to_string(), m.release_date]);
+                    }
+                    println!("{table}");
+                },
                 Err(err) => println!("Error: {err}"),
             }
         }
         Mode::TOP => {
             let response = make_request("https://api.themoviedb.org/3/movie/top_rated", &api_key);
             match response {
-                Ok(res) => println!("{:?}", res),
+                Ok(res) => {
+                    for m in res.results {
+                        table.add_row(vec![m.title, m.overview, m.vote_average.to_string(), m.release_date]);
+                    }
+                    println!("{table}");
+                },
                 Err(err) => println!("Error: {err}"),
             }
         }
         Mode::UPCOMING => {
             let response = make_request("https://api.themoviedb.org/3/movie/upcoming", &api_key);
             match response {
-                Ok(res) => println!("{:?}", res),
+                Ok(res) => {
+                    for m in res.results {
+                        table.add_row(vec![m.title, m.overview, m.vote_average.to_string(), m.release_date]);
+                    }
+                    println!("{table}");
+                },
                 Err(err) => println!("Error: {err}"),
             }
         }
     }
-
 }
 
 fn make_request(url: &str, api_key: &str) -> Result<models::Res, Box<dyn std::error::Error>> {
